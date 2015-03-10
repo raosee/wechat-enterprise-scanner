@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.2/socket.io.min.js"></script>
+<script src="http://scdn.bozhong.com/source/common/js/jquery.min.js"></script>
+<script>
+
+connect();
+
+function connect() {
+	io = io.connect('localhost:8080/wx', {
+		transports: ['websocket']
+	});
+
+	io.emit('wx:qrcode:give_me_code');
+
+	io.on('wx:qrcode:got', function(data) {
+		console.log(data);
+		var url = "http://chart.apis.google.com/chart?chs=500x500&amp;cht=qr&amp;chld=|1&amp;chl=" + encodeURIComponent(data);
+		$('<img src="' + url + '">').appendTo('body');
+	});
+
+	io.on('wx:scan:success', function(data) {
+		console.log(data);
+		console.log('扫描成功');
+	});
+
+	io.on('wx:auth:success', function(data) {
+		console.log('登录成功', data);
+	});
+
+	io.on('wx:auth:error', function(data) {
+		console.log('登录失败', data);
+	});
+} 
+
+</script>
+	
+</body>
+</html>

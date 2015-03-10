@@ -1,0 +1,9 @@
+{
+	"site": {
+		"domain": "localhost:8080"
+	},
+	"corp": {
+		"corpid": "wx**",
+		"secret": "****"
+	}
+}
